@@ -1,0 +1,41 @@
+Slip 13
+Q1) Registration Form Validation
+package com.example.registration;
+
+import android.os.Bundle;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText name,mobile,age;
+    Button register;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        name=findViewById(R.id.name);
+        mobile=findViewById(R.id.mobile);
+        age=findViewById(R.id.age);
+        register=findViewById(R.id.register);
+
+        register.setOnClickListener(v -> {
+
+            if(name.getText().toString().isEmpty())
+                Toast.makeText(this,"Enter Name",Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this,"Registration Successful",Toast.LENGTH_SHORT).show();
+        });
+    }
+}
+Q2) ListView Insert Delete Search
+ArrayList<String> list=new ArrayList<>();
+
+list.add("Java");
+list.add("Python");
+list.remove("Java");
+
+if(list.contains("Python"))
+    System.out.println("Found");
