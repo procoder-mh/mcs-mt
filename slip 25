@@ -1,0 +1,16 @@
+Slip 25
+Q1) SMS Activity
+Intent intent=new Intent(Intent.ACTION_VIEW);
+
+intent.setData(Uri.parse("sms:9876543210"));
+intent.putExtra("sms_body","Hello");
+
+startActivity(intent);
+Q2) Login Form using Table Layout
+String u=username.getText().toString();
+String p=password.getText().toString();
+
+if(u.equals(p))
+    Toast.makeText(this,"Login Successful",Toast.LENGTH_SHORT).show();
+else
+    Toast.makeText(this,"Invalid Login",Toast.LENGTH_SHORT).show();
