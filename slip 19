@@ -1,0 +1,15 @@
+Slip 19
+Q1) Change Image on Screen
+ImageView img=findViewById(R.id.img);
+
+img.setImageResource(R.drawable.image2);
+Q2) Factorial and Sum of Digits using Menu
+int n=123,sum=0,r;
+
+while(n>0){
+    r=n%10;
+    sum=sum+r;
+    n=n/10;
+}
+
+System.out.println("Sum="+sum);
