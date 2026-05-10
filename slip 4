@@ -1,0 +1,130 @@
+Slips 4
+Q.1) Create an application that allows the user to enter a number in the textbox. Check whether the number in the textbox is Prime or not. Print the message accordingly in the label control.
+Ans.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent" tools:context=".MainActivity">
+<EditText
+android:id="@+id/editTextNumber" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_marginTop="50dp" android:hint="Enter a number"
+android:inputType="number" />
+<Button
+android:id="@+id/buttonCheck"
+android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/editTextNumber" android:layout_centerHorizontal="true" android:layout_marginTop="20dp" android:text="Check Prime" />
+<TextView
+android:id="@+id/textViewResult" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/buttonCheck" android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp"
+android:text=""
+android:textSize="18sp" />
+</RelativeLayout>
+MainActivity.java
+package com.example.myapplication;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity; public class MainActivity extends AppCompatActivity {
+private EditText editTextNumber;
+private Button buttonCheck;
+private TextView textViewResult;
+@Override
+protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+editTextNumber = findViewById(R.id.editTextNumber); buttonCheck = findViewById(R.id.buttonCheck); textViewResult =
+findViewById(R.id.textViewResult);
+buttonCheck.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+checkPrime();
+}
+});
+}
+private void checkPrime() {
+String numberStr =
+editTextNumber.getText().toString().trim();
+if (numberStr.isEmpty()) {
+textViewResult.setText("Please enter a number"); return;
+}
+int number = Integer.parseInt(numberStr);
+boolean isPrime = isPrime(number);
+String resultText = isPrime ? "The number is prime" : "The number is not prime";
+textViewResult.setText(resultText);
+}
+private boolean isPrime(int number) { if (number <= 1) {
+return false;
+}
+for (int i = 2; i <= Math.sqrt(number); i++) { if (number % i == 0) {
+return false;
+}
+}
+return true;
+}
+}
+Output-
+Q.2) Create an Android application which examine a phone number entered by a user with the given format. * Area code should be one of the following : 040, 041, 050, 0400, 044 * There should 6 - 8 numbers in telephone number (+ area code).
+Ans.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/editTextPhoneNumber"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="16dp"
+android:hint="Enter phone number (e.g., 040123456)" android:inputType="phone" />
+<Button
+android:id="@+id/buttonCheck"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@id/editTextPhoneNumber" android:layout_centerHorizontal="true"
+android:layout_marginTop="16dp"
+android:text="Check Number"
+android:onClick="checkPhoneNumberValidity" />
+<TextView
+android:id="@+id/textViewResult"
+android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/buttonCheck" android:layout_centerHorizontal="true" android:layout_marginTop="16dp"
+android:text=""
+android:textSize="18sp" />
+</RelativeLayout>
+MainActivity.java
+package com.example.myapplication;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity; public class MainActivity extends AppCompatActivity {
+private EditText editTextPhoneNumber;
+private TextView textViewResult;
+@Override
+protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+editTextPhoneNumber =
+findViewById(R.id.editTextPhoneNumber);
+textViewResult = findViewById(R.id.textViewResult); }
+public void checkPhoneNumberValidity(View view) {
+String phoneNumber =
+editTextPhoneNumber.getText().toString().trim();
+if (isValidPhoneNumber(phoneNumber)) {
+textViewResult.setText("Valid phone number"); } else {
+textViewResult.setText("Invalid phone number"); }
+}
+private boolean isValidPhoneNumber(String phoneNumber) { // Check if the phone number has valid length
+if (phoneNumber.length() < 6 || phoneNumber.length() > 10) {
+return false;
+}
+// Check if the area code is valid
+String areaCode = phoneNumber.substring(0, 3);
+if (!areaCode.equals("040") && !areaCode.equals("041") && !areaCode.equals("050") &&
+!areaCode.equals("0400") && !areaCode.equals("044")) { return false;
+}
+// Check if the rest of the number contains only digits String restOfNumber = phoneNumber.substring(3); if (!restOfNumber.matches("[0-9]+")) {
+return false;
+}
+return true;
+}
+}
+Output
