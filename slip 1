@@ -1,0 +1,77 @@
+Slips 1
+Q1) Write an application to accept two numbers from the user and displays them. But Reject input if both numbers are greater than 20 and asks for two new numbers.
+Ans.
+<!-- activity_main.xml -->
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="16dp"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/editTextNumber1"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter Number 1"
+android:inputType="numberDecimal" />
+<EditText
+android:id="@+id/editTextNumber2"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@id/editTextNumber1"
+android:layout_marginTop="16dp" android:hint="Enter Number 2"
+android:inputType="numberDecimal" />
+<Button
+android:id="@+id/buttonSubmit"
+android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/editTextNumber2" android:layout_marginTop="16dp" android:text="Submit" />
+<TextView
+android:id="@+id/textViewResult" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/buttonSubmit" android:layout_marginTop="16dp" android:text="Result:"
+android:textSize="18sp" />
+</RelativeLayout>
+MainActivity.java
+package com.example.myapplication;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+public class MainActivity extends AppCompatActivity {
+private EditText editTextNumber1;
+private EditText editTextNumber2;
+private Button buttonSubmit;
+private TextView textViewResult;
+@Override
+protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+editTextNumber1 = findViewById(R.id.editTextNumber1); editTextNumber2 = findViewById(R.id.editTextNumber2);
+buttonSubmit = findViewById(R.id.buttonSubmit); textViewResult = findViewById(R.id.textViewResult);
+buttonSubmit.setOnClickListener(new
+View.OnClickListener() {
+@Override
+public void onClick(View v) {
+submitNumbers();
+}
+});
+}
+private void submitNumbers() {
+String number1String =
+editTextNumber1.getText().toString().trim();
+String number2String =
+editTextNumber2.getText().toString().trim();
+if (number1String.isEmpty() || number2String.isEmpty()) { textViewResult.setText("Please enter both numbers."); return;
+}
+double number1 = Double.parseDouble(number1String); double number2 = Double.parseDouble(number2String);
+if (number1 > 20 && number2 > 20) {
+textViewResult.setText("Both numbers are greater than 20. Please enter new numbers.");
+editTextNumber1.setText("");
+editTextNumber2.setText("");
+return;
+}
+textViewResult.setText("Number 1: " + number1 + "\nNumber 2: " + number2);
+}
+}
+Output-
+
+
+Q2) Write a PhoneGap application to display push notification. Ans.
+
