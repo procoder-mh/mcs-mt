@@ -1,0 +1,209 @@
+Slips 3
+Q.1) Create an application that allows the user to enter a number in the textbox. Check whether the number in the textbox is Prime or not. Print the message accordingly in the label control.
+Ans.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<EditText
+android:id="@+id/editTextNumber"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="50dp"
+android:hint="Enter a number"
+android:inputType="number" />
+<Button
+android:id="@+id/buttonCheck"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_below="@id/editTextNumber"
+android:layout_centerHorizontal="true" android:layout_marginTop="20dp" android:text="Check Prime" />
+<TextView
+android:id="@+id/textViewResult" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/buttonCheck" android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp" android:text=""
+android:textSize="18sp" />
+</RelativeLayout>
+MainActivity.java
+package com.example.myapplication;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+private EditText editTextNumber;
+private Button buttonCheck;
+private TextView textViewResult;
+@Override
+protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+editTextNumber = findViewById(R.id.editTextNumber); buttonCheck = findViewById(R.id.buttonCheck); textViewResult = findViewById(R.id.textViewResult);
+buttonCheck.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+checkPrime();
+}
+});
+}
+private void checkPrime() {
+String numberStr =
+editTextNumber.getText().toString().trim();
+if (numberStr.isEmpty()) {
+textViewResult.setText("Please enter a number"); return;
+}
+int number = Integer.parseInt(numberStr);
+boolean isPrime = isPrime(number);
+String resultText = isPrime ? "The number is prime" : "The number is not prime";
+textViewResult.setText(resultText);
+}
+private boolean isPrime(int number) {
+if (number <= 1) {
+return false;
+}
+for (int i = 2; i <= Math.sqrt(number); i++) {
+if (number % i == 0) {
+return false;
+}
+}
+return true;
+}
+}
+Output
+Q.2) Java Android Program to perform all arithmetic Operations using Calculators.
+Ans.
+<!-- activity_calculator.xml -->
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="16dp">
+<TextView
+android:id="@+id/textViewResult"
+android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="24sp"
+android:layout_marginBottom="16dp" android:text="0"
+android:textAlignment="textEnd"/>
+<GridLayout
+android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@id/textViewResult" android:columnCount="4"
+android:orientation="horizontal">
+<Button
+android:id="@+id/button0"
+android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button1"
+android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4"
+android:onClick="onButtonClick"/> <Button
+android:id="@+id/button5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button6" android:layout_width="wrap_content"
+android:layout_height="wrap_content" android:text="6"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/button9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="9"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttonPlus" android:layout_width="wrap_content" android:layout_height="wrap_content"
+android:text="+"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttonsubtraction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttonmultipliaction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="×"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttondivision" android:layout_width="wrap_content" android:layout_height="wrap_content"
+android:text="÷"
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttonequal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="="
+android:onClick="onButtonClick"/>
+<Button
+android:id="@+id/buttonclear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="C"
+android:onClick="onButtonClick"/> </GridLayout>
+</RelativeLayout>
+MainActivity.java
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity; public class CalculatorActivity extends AppCompatActivity {
+private TextView textViewResult;
+private String input = "";
+private double operand1 = Double.NaN;
+private double operand2 = Double.NaN;
+private String operator = "";
+@Override
+protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_calculator);
+textViewResult = findViewById(R.id.textViewResult); }
+public void onButtonClick(View view) {
+Button button = (Button) view;
+String buttonText = button.getText().toString();
+switch (buttonText) {
+case "C":
+clear();
+break;
+case "+":
+case "-":
+case "×":
+case "÷":
+if (!input.isEmpty()) {
+operand1 = Double.parseDouble(input); operator = buttonText;
+input = "";
+}
+break;
+case "=":
+if (!Double.isNaN(operand1) && !input.isEmpty()) { operand2 = Double.parseDouble(input); input = String.valueOf(calculate()); operand1 = Double.NaN;
+operand2 = Double.NaN;
+operator = "";
+}
+break;
+default:
+input += buttonText;
+}
+textViewResult.setText(input);
+}
+private void clear() {
+input = "";
+operand1 = Double.NaN;
+operand2 = Double.NaN;
+operator = "";
+textViewResult.setText("0");
+}
+private double calculate() {
+switch (operator) {
+case "+":
+return operand1 + operand2;
+case "-":
+return operand1 - operand2;
+case "×":
+return operand1 * operand2;
+case "÷":
+if (operand2 == 0) return Double.NaN; // handle division by zero
+return operand1 / operand2;
+default:
+return Double.NaN;
+}
+}
+}
+Output
