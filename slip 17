@@ -1,0 +1,17 @@
+Slip 17
+Q1) Activity Life Cycle
+@Override
+protected void onStart() {
+    super.onStart();
+    Toast.makeText(this,"onStart",Toast.LENGTH_SHORT).show();
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+    Toast.makeText(this,"onResume",Toast.LENGTH_SHORT).show();
+}
+Q2) PhoneGap Contact App
+navigator.contacts.find(["displayName"], function(contacts){
+    alert("Contacts Found");
+});
