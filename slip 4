@@ -1,17 +1,68 @@
-Slip 4
-Q1) Image Switcher
+Q1
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <Button
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous"/>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+#java.main 
 package com.example.imageswitcher;
 
 import android.os.Bundle;
-import android.widget.*;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements ViewSwitcher.ViewFactory {
 
     ImageSwitcher imageSwitcher;
-    Button next;
-    int images[] = {R.drawable.img1,R.drawable.img2,R.drawable.img3};
+
+    int images[] = {
+            R.drawable.image1,
+            R.drawable.image2,
+            R.drawable.image3
+    };
+
     int position = 0;
+
+    Button next, previous;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,22 +70,60 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageSwitcher = findViewById(R.id.imageSwitcher);
+
         next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
 
-        imageSwitcher.setFactory(() -> {
-            ImageView imageView = new ImageView(getApplicationContext());
-            return imageView;
-        });
+        // setFactory() method
+        imageSwitcher.setFactory(this);
 
+        // Display first image
         imageSwitcher.setImageResource(images[position]);
 
-        next.setOnClickListener(v -> {
-            position = (position + 1) % images.length;
-            imageSwitcher.setImageResource(images[position]);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                position++;
+
+                if(position == images.length)
+                    position = 0;
+
+                imageSwitcher.setImageResource(images[position]);
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                position--;
+
+                if(position < 0)
+                    position = images.length - 1;
+
+                imageSwitcher.setImageResource(images[position]);
+            }
         });
     }
+
+    @Override
+    public View makeView() {
+
+        ImageView imageView = new ImageView(this);
+
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        imageView.setLayoutParams(
+                new ImageSwitcher.LayoutParams(
+                        ImageSwitcher.LayoutParams.MATCH_PARENT,
+                        ImageSwitcher.LayoutParams.MATCH_PARENT
+                )
+        );
+
+        return imageView;
+    }
 }
-Q2) Search Location on Google Map
-Intent intent = new Intent(Intent.ACTION_VIEW,
-Uri.parse("geo:0,0?q=Pune"));
-startActivity(intent);
+
+Q2
+
