@@ -1,15 +1,175 @@
-Slip 19
-Q1) Change Image on Screen
-ImageView img=findViewById(R.id.img);
+Q1
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-img.setImageResource(R.drawable.image2);
-Q2) Factorial and Sum of Digits using Menu
-int n=123,sum=0,r;
+    <!-- ImageView to display the image -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dog"
+    android:layout_centerInParent="true"
+    android:contentDescription="Image Display"/>
 
-while(n>0){
-    r=n%10;
-    sum=sum+r;
-    n=n/10;
+    <!-- Button to change the image -->
+    <Button
+        android:id="@+id/changeImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Image"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"/>
+
+</RelativeLayout>
+
+//MainActivity.java
+package com.example.changeimage;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private ImageView imageView;
+    private Button changeImageButton;
+    private boolean isImage1 = true;  // To keep track of the current image
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.imageView);
+        changeImageButton = findViewById(R.id.changeImageButton);
+
+        // Set an OnClickListener to change the image when the button is clicked
+        changeImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle the image
+                if (isImage1) {
+                    imageView.setImageResource(R.drawable.dog2);  // Change to image2
+                } else {
+                    imageView.setImageResource(R.drawable.dog);  // Change back to image1
 }
 
-System.out.println("Sum="+sum);
+                // Toggle the flag to keep track of the current image
+                isImage1 = !isImage1;
+            }
+        });
+    }
+}
+
+Q2
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="16dp"
+    android:layout_marginTop="500dp">
+
+<EditText
+    android:id="@+id/numberEditText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter a number"
+    android:inputType="number"/>
+
+<TextView
+    android:id="@+id/resultTextView"
+    android:layout_below="@id/numberEditText"
+    android:layout_marginTop="20dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Result will appear here"
+    android:textSize="18sp"/>
+</RelativeLayout>
+//menu_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+      <item
+            android:id="@+id/action_factorial"
+            android:title="Find Factorial"/>
+        <item
+            android:id="@+id/action_sum_digits"
+            android:title="Find Sum of Digits"/>
+</menu>
+
+//MainActivity.java
+package com.example.factorialandsum;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText numberEditText;
+    TextView resultTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numberEditText = findViewById(R.id.numberEditText);
+        resultTextView = findViewById(R.id.resultTextView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Creating menu programmatically
+        menu.add(0, 1, Menu.NONE, "Find Factorial");
+        menu.add(0, 2, Menu.NONE, "Find Sum of Digits");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String input = numberEditText.getText().toString();
+
+        if (input.isEmpty()) {
+            Toast.makeText(this, "Please enter a number", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        int number = Integer.parseInt(input);
+
+        switch (item.getItemId()) {
+            case 1: // Factorial
+                long fact = 1;
+                for (int i = 1; i <= number; i++) {
+                    fact *= i;
+                }
+                resultTextView.setText("Factorial of " + number + " is " + fact);
+                return true;
+
+            case 2: // Sum of Digits
+                int sum = 0, n = number;
+                while (n > 0) {
+                    sum += n % 10;
+                    n /= 10;
+                }
+                resultTextView.setText("Sum of digits of " + number + " is " + sum);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+}
+//themes.xml
+<style name="Theme.FactorialAndSum" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
