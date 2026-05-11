@@ -1,48 +1,245 @@
-Slip 9
-Q1) Palindrome Number
-package com.example.palindrome;
+Q1
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/getnum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a number"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/checkBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="24dp"
+        android:textColor="#000000" />
+</LinearLayout>
+
+//MainActivity.java
+package com.example.palindromechecker;
 
 import android.os.Bundle;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText getnum;
-    Button check;
-    TextView result;
+    Button checkBtn;
+    TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getnum=findViewById(R.id.getnum);
-        check=findViewById(R.id.check);
-        result=findViewById(R.id.result);
+        getnum = findViewById(R.id.getnum);
+        checkBtn = findViewById(R.id.checkBtn);
+        resultText = findViewById(R.id.resultText);
 
-        check.setOnClickListener(v -> {
+        checkBtn.setOnClickListener(v -> {
+            String input = getnum.getText().toString().trim();
 
-            int n=Integer.parseInt(getnum.getText().toString());
-            int temp=n,rev=0,r;
-
-            while(n>0){
-                r=n%10;
-                rev=rev*10+r;
-                n=n/10;
+            if (input.isEmpty()) {
+                resultText.setText("Please enter a number.");
+                return;
             }
 
-            if(temp==rev)
-                result.setText("Palindrome");
-            else
-                result.setText("Not Palindrome");
+            String reversed = new StringBuilder(input).reverse().toString();
+
+            if (input.equals(reversed)) {
+                resultText.setText("✅ It's a Palindrome!");
+            } else {
+                resultText.setText("❌ Not a Palindrome.");
+            }
         });
     }
 }
-Q2) Simple Calculator
-int a=10,b=5;
 
-System.out.println("Addition="+(a+b));
-System.out.println("Subtraction="+(a-b));
-System.out.println("Multiplication="+(a*b));
-System.out.println("Division="+(a/b));
+Q2
+//acticity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="end|center_vertical"
+        android:text="0"
+        android:textSize="36sp"
+        android:background="#EEEEEE"
+        android:padding="16dp"
+        android:textColor="#000000" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:layout_marginTop="20dp">
+
+        <!-- Row 1 -->
+        <Button android:id="@+id/btnClear" android:text="C" style="@style/CalcButton"/>
+        <Button android:text="" style="@style/CalcButton"/>
+        <Button android:text="" style="@style/CalcButton"/>
+        <Button android:id="@+id/btnDivide" android:text="÷" style="@style/CalcButton"/>
+
+        <!-- Row 2 -->
+        <Button android:id="@+id/btn7" android:text="7" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn8" android:text="8" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn9" android:text="9" style="@style/CalcButton"/>
+        <Button android:id="@+id/btnMultiply" android:text="×" style="@style/CalcButton"/>
+
+        <!-- Row 3 -->
+        <Button android:id="@+id/btn4" android:text="4" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn5" android:text="5" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn6" android:text="6" style="@style/CalcButton"/>
+        <Button android:id="@+id/btnSubtract" android:text="−" style="@style/CalcButton"/>
+
+        <!-- Row 4 -->
+        <Button android:id="@+id/btn1" android:text="1" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn2" android:text="2" style="@style/CalcButton"/>
+        <Button android:id="@+id/btn3" android:text="3" style="@style/CalcButton"/>
+        <Button android:id="@+id/btnAdd" android:text="+" style="@style/CalcButton"/>
+
+        <!-- Row 5 -->
+        <Button android:id="@+id/btn0" android:text="0" style="@style/CalcButton" />
+        <Button android:id="@+id/btnDot" android:text="." style="@style/CalcButton"/>
+        <Button android:id="@+id/btnEqual" android:text="=" style="@style/CalcButton"/>
+        <Button android:text="" style="@style/CalcButton"/> <!-- Empty for spacing -->
+    </GridLayout>
+</LinearLayout>
+// /values/styles.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CalcButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">#DDDDDD</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+</resources>
+
+//MainActivity.java
+package com.example.calculator;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    TextView resultView;
+    String current = "";
+    String operator = "";
+    double firstNumber = 0;
+    boolean isOperatorClicked = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        resultView = findViewById(R.id.resultView);
+
+        int[] numberBtnIDs = {
+                R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4,
+                R.id.btn5, R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9, R.id.btnDot
+        };
+
+        View.OnClickListener numberListener = view -> {
+            Button btn = (Button) view;
+            if (isOperatorClicked) {
+                current = "";
+                isOperatorClicked = false;
+            }
+            current += btn.getText().toString();
+            resultView.setText(current);
+        };
+
+        for (int id : numberBtnIDs) {
+            Button b = findViewById(id);
+            if (b != null) {
+                b.setOnClickListener(numberListener);
+            }
+        }
+
+        findViewById(R.id.btnAdd).setOnClickListener(opListener("+"));
+        findViewById(R.id.btnSubtract).setOnClickListener(opListener("-"));
+        findViewById(R.id.btnMultiply).setOnClickListener(opListener("*"));
+        findViewById(R.id.btnDivide).setOnClickListener(opListener("/"));
+
+        findViewById(R.id.btnEqual).setOnClickListener(v -> {
+            if (current.isEmpty()) return;
+
+            double secondNumber = Double.parseDouble(current);
+            double result = 0;
+
+            switch (operator) {
+                case "+": result = firstNumber + secondNumber; break;
+                case "-": result = firstNumber - secondNumber; break;
+                case "*": result = firstNumber * secondNumber; break;
+                case "/":
+                    if (secondNumber == 0) {
+                        resultView.setText("Error: ÷ by 0");
+                        return;
+                    }
+                    result = firstNumber / secondNumber;
+                    break;
+                default:
+                    return;
+            }
+
+            current = String.valueOf(result);
+            resultView.setText(current);
+        });
+
+        findViewById(R.id.btnClear).setOnClickListener(v -> {
+            current = "";
+            operator = "";
+            firstNumber = 0;
+            resultView.setText("0");
+        });
+    }
+
+    private View.OnClickListener opListener(String op) {
+        return view -> {
+            if (current.isEmpty()) return;
+
+            firstNumber = Double.parseDouble(current);
+            operator = op;
+            isOperatorClicked = true;
+        };
+    }
+}
+
