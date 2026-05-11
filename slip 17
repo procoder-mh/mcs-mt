@@ -1,159 +1,77 @@
-Q1
-//activity_main.xml
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+# Slip 17 - Question 1 - Activity Life Cycle
+
+## activity_main.xml
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Android Activity Life Cycle"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
-
+    android:orientation="vertical"
+    android:padding="20dp">
+    <TextView android:id="@+id/log" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp"/>
 </LinearLayout>
+```
 
-//activity_main.java
-package com.example.activitylifecycle;
+## MainActivity.java
 
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+```java
+package com.example.madt;
+
 import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
-    String TAG = "ActivityLifeCycle";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Toast.makeText(this, "onCreate Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onCreate Called");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Toast.makeText(this, "onStart Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onStart Called");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Toast.makeText(this, "onResume Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onResume Called");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Toast.makeText(this, "onPause Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onPause Called");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        Toast.makeText(this, "onStop Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onStop Called");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        Toast.makeText(this, "onRestart Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onRestart Called");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        Toast.makeText(this, "onDestroy Called", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDestroy Called");
-    }
+    TextView log;
+    void add(String s){ log.append(s + "\n"); }
+    @Override protected void onCreate(Bundle b){ super.onCreate(b); setContentView(R.layout.activity_main); log=findViewById(R.id.log); add("onCreate"); }
+    @Override protected void onStart(){ super.onStart(); add("onStart"); }
+    @Override protected void onResume(){ super.onResume(); add("onResume"); }
+    @Override protected void onPause(){ super.onPause(); add("onPause"); }
+    @Override protected void onStop(){ super.onStop(); add("onStop"); }
+    @Override protected void onRestart(){ super.onRestart(); add("onRestart"); }
+    @Override protected void onDestroy(){ super.onDestroy(); }
 }
+```
 
-Q2
-//activity_main.html
+# Slip 17 - Question 2 - PhoneGap Contacts
+
+## index.html
+
+```html
 <!DOCTYPE html>
 <html>
-<head>
-    <title>PhoneGap Contact App</title>
-
-    <script type="text/javascript" src="cordova.js"></script>
-
-    <script type="text/javascript">
-
-        document.addEventListener("deviceready", onDeviceReady, false);
-
-        function onDeviceReady() {
-            console.log("PhoneGap Ready");
-        }
-
-        function createContact() {
-
-            // Create contact object
-            var contact = navigator.contacts.create();
-
-            // Set display name
-            contact.displayName = "Rahul Sharma";
-
-            // Create name object
-            var name = new ContactName();
-            name.givenName = "Rahul";
-            name.familyName = "Sharma";
-
-            contact.name = name;
-
-            // Add phone number
-            var phoneNumbers = [];
-
-            phoneNumbers[0] = new ContactField(
-                'mobile',
-                '9876543210',
-                true
-            );
-
-            contact.phoneNumbers = phoneNumbers;
-
-            // Save contact
-            contact.save(onSuccess, onError);
-        }
-
-        function onSuccess(contact) {
-            alert("Contact Saved Successfully");
-        }
-
-        function onError(error) {
-            alert("Error : " + error.code);
-        }
-
-    </script>
-</head>
-
+<head><title>Contacts</title><script src="cordova.js"></script></head>
 <body>
-
-    <h2>PhoneGap Contact Application</h2>
-
-    <button onclick="createContact()">
-        Create Contact
-    </button>
-
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<button onclick="createContact()">Create</button>
+<button onclick="searchContact()">Search</button>
+<button onclick="cloneContact()">Clone</button>
+<button onclick="removeContact()">Remove</button>
+<pre id="out"></pre>
+<script src="js/index.js"></script>
 </body>
 </html>
+```
 
+## js/index.js
 
+```javascript
+let lastContact = null;
+function createContact(){
+    let c = navigator.contacts.create();
+    c.displayName = document.getElementById('name').value;
+    c.phoneNumbers = [new ContactField('mobile', document.getElementById('phone').value, true)];
+    c.save(x => { lastContact = x; out.textContent = 'Saved'; }, e => out.textContent = 'Error');
+}
+function searchContact(){
+    navigator.contacts.find(['displayName','phoneNumbers'], cs => out.textContent = JSON.stringify(cs), null, {filter: document.getElementById('name').value, multiple: true});
+}
+function cloneContact(){
+    if(lastContact){ let c = lastContact.clone(); c.displayName += ' Copy'; c.save(); out.textContent = 'Cloned'; }
+}
+function removeContact(){
+    if(lastContact){ lastContact.remove(() => out.textContent = 'Removed'); }
+}
+```
