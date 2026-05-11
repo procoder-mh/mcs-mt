@@ -1,5 +1,73 @@
-Slip 13
-Q1) Registration Form Validation
+Q1
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registration Form"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <TextView android:text="Name" />
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Name" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Address" />
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Address" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Mobile No." />
+            <EditText
+                android:id="@+id/etMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Mobile No."
+                android:inputType="phone" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="Age" />
+            <EditText
+                android:id="@+id/etAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Age"
+                android:inputType="number" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+</LinearLayout>
+
+//MainActivity.java
 package com.example.registration;
 
 import android.os.Bundle;
@@ -8,34 +76,139 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText name,mobile,age;
-    Button register;
+    EditText etName, etAddress, etMobile, etAge;
+    Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        name=findViewById(R.id.name);
-        mobile=findViewById(R.id.mobile);
-        age=findViewById(R.id.age);
-        register=findViewById(R.id.register);
+        etName = findViewById(R.id.etName);
+        etAddress = findViewById(R.id.etAddress);
+        etMobile = findViewById(R.id.etMobile);
+        etAge = findViewById(R.id.etAge);
+        btnRegister = findViewById(R.id.btnRegister);
 
-        register.setOnClickListener(v -> {
+        btnRegister.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String address = etAddress.getText().toString().trim();
+            String mobile = etMobile.getText().toString().trim();
+            String age = etAge.getText().toString().trim();
 
-            if(name.getText().toString().isEmpty())
-                Toast.makeText(this,"Enter Name",Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this,"Registration Successful",Toast.LENGTH_SHORT).show();
+            if (name.isEmpty()) {
+                etName.setError("Name is required");
+                return;
+            }
+            if (address.isEmpty()) {
+                etAddress.setError("Address is required");
+                return;
+            }
+            if (mobile.isEmpty() || mobile.length() != 10) {
+                etMobile.setError("Valid 10-digit mobile number required");
+                return;
+            }
+            if (age.isEmpty() || Integer.parseInt(age) <= 0 || Integer.parseInt(age) <18 || Integer.parseInt(age) > 80) {
+                etAge.setError("Age Must be Between 18 to 80");
+                return;
+            }
+
+            Toast.makeText(this, "Registered Successfully!", Toast.LENGTH_SHORT).show();
         });
     }
 }
-Q2) ListView Insert Delete Search
-ArrayList<String> list=new ArrayList<>();
 
-list.add("Java");
-list.add("Python");
-list.remove("Java");
+Q2
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-if(list.contains("Python"))
-    System.out.println("Found");
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search" />
+
+    <EditText
+        android:id="@+id/itemText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Item" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
+
+//MainActivity.java
+package com.example.listview;
+
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText itemText, searchText;
+    Button addButton;
+    ListView listView;
+    ArrayList<String> itemList;
+    ArrayAdapter<String> adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        itemText = findViewById(R.id.itemText);
+        searchText = findViewById(R.id.searchText);
+        addButton = findViewById(R.id.addButton);
+        listView = findViewById(R.id.listView);
+
+        itemList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemList);
+        listView.setAdapter(adapter);
+
+        // Add item
+        addButton.setOnClickListener(v -> {
+            String item = itemText.getText().toString();
+            if (!item.isEmpty()) {
+                itemList.add(item);
+                adapter.notifyDataSetChanged();
+                itemText.setText("");
+            }
+        });
+
+        // Delete on long click
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            itemList.remove(position);
+            adapter.notifyDataSetChanged();
+            return true;
+        });
+
+        // Search filter
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+    }
+}
+
