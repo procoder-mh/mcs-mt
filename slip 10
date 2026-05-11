@@ -1,24 +1,203 @@
-Slip 10
-Q1) Armstrong Number using Toast
-int n=153,temp=n,sum=0,r;
+#Q1
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
 
-while(n>0){
-    r=n%10;
-    sum=sum+(r*r*r);
-    n=n/10;
+    <EditText
+        android:id="@+id/numberInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a number"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/checkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check Armstrong Number"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>
+
+//MainActivity.java
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.R;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText numberInput;
+    Button checkButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        numberInput = findViewById(R.id.numberInput);
+        checkButton = findViewById(R.id.checkButton);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = numberInput.getText().toString();
+
+                if (input.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter a number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int num = Integer.parseInt(input);
+
+                if (isArmstrongNumber (num)) {
+                    Toast.makeText(MainActivity.this, num + " is a Perfect Number", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, num + " is Not a Perfect Number", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private boolean isArmstrongNumber(int number) {
+        if (number <= 1) return false;
+
+        int temp,ans=0,rem;
+	temp=number;
+while(temp!=0){
+rem=temp%10;
+ans=ans + pow(rem,3);
+temp=temp/10;
+}
+        return ans == temp;
+    }
 }
 
-if(temp==sum)
-    Toast.makeText(this,"Armstrong Number",Toast.LENGTH_SHORT).show();
-else
-    Toast.makeText(this,"Not Armstrong",Toast.LENGTH_SHORT).show();
-Q2) Spinner and Buttons GUI
-Spinner spinner;
-Button btn;
+Q2 
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
 
-String items[]={"Java","Python","Android"};
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Item:" />
 
-ArrayAdapter adapter=new ArrayAdapter(this,
-android.R.layout.simple_spinner_dropdown_item,items);
+    <EditText
+        android:id="@+id/editTextItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Item" />
 
-spinner.setAdapter(adapter);
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add to spinner" />
+
+        <Button
+            android:id="@+id/btnRemove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Remove from spinner" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Response Below"
+        android:layout_marginTop="20dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+//MainActivity.java
+package com.example.guispinner;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText editTextItem;
+    Button btnAdd, btnRemove;
+    Spinner spinner;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> itemList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editTextItem = findViewById(R.id.editTextItem);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnRemove = findViewById(R.id.btnRemove);
+        spinner = findViewById(R.id.spinner);
+
+        // Initial list
+        itemList = new ArrayList<>();
+        itemList.add("Apple"); // Default item
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String item = editTextItem.getText().toString().trim();
+                if (!item.isEmpty() && !itemList.contains(item)) {
+                    itemList.add(item);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, item + " added", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Item is empty or already in list", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String item = editTextItem.getText().toString().trim();
+                if (itemList.contains(item)) {
+                    itemList.remove(item);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, item + " removed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Item not found in list", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+}
+
