@@ -1,17 +1,159 @@
-Slip 17
-Q1) Activity Life Cycle
-@Override
-protected void onStart() {
-    super.onStart();
-    Toast.makeText(this,"onStart",Toast.LENGTH_SHORT).show();
+Q1
+//activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Android Activity Life Cycle"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>
+
+//activity_main.java
+package com.example.activitylifecycle;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    String TAG = "ActivityLifeCycle";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Toast.makeText(this, "onCreate Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onCreate Called");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Toast.makeText(this, "onStart Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onStart Called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Toast.makeText(this, "onResume Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onResume Called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Toast.makeText(this, "onPause Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onPause Called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Toast.makeText(this, "onStop Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onStop Called");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Toast.makeText(this, "onRestart Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onRestart Called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Toast.makeText(this, "onDestroy Called", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDestroy Called");
+    }
 }
 
-@Override
-protected void onResume() {
-    super.onResume();
-    Toast.makeText(this,"onResume",Toast.LENGTH_SHORT).show();
-}
-Q2) PhoneGap Contact App
-navigator.contacts.find(["displayName"], function(contacts){
-    alert("Contacts Found");
-});
+Q2
+//activity_main.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PhoneGap Contact App</title>
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <script type="text/javascript">
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+            console.log("PhoneGap Ready");
+        }
+
+        function createContact() {
+
+            // Create contact object
+            var contact = navigator.contacts.create();
+
+            // Set display name
+            contact.displayName = "Rahul Sharma";
+
+            // Create name object
+            var name = new ContactName();
+            name.givenName = "Rahul";
+            name.familyName = "Sharma";
+
+            contact.name = name;
+
+            // Add phone number
+            var phoneNumbers = [];
+
+            phoneNumbers[0] = new ContactField(
+                'mobile',
+                '9876543210',
+                true
+            );
+
+            contact.phoneNumbers = phoneNumbers;
+
+            // Save contact
+            contact.save(onSuccess, onError);
+        }
+
+        function onSuccess(contact) {
+            alert("Contact Saved Successfully");
+        }
+
+        function onError(error) {
+            alert("Error : " + error.code);
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <h2>PhoneGap Contact Application</h2>
+
+    <button onclick="createContact()">
+        Create Contact
+    </button>
+
+</body>
+</html>
+
+
